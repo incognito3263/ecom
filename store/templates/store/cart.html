@@ -1,0 +1,53 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box-element">
+                <a href="{% url 'store' %}" class="btn btn-outline-dark">&#x2190;Continue Shopping</a>
+                <br>
+                <br>
+                <table class="table">
+                    <tr>
+                        <th><h5>Items: <b>{{ order.get_cart_items_total }}</b></h5></th>
+                        <th><h5>Total: <b>${{ order.get_items_price_total|floatformat:2 }}</b></h5></th>
+                        <th>
+                            <a class="btn btn-success m-2" href="{% url 'checkout' %}" style="float: right;">
+                                Checkout
+                            </a>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <div class="box-element">
+                <div class="cart-row">
+                    <div style="flex:2;"></div>
+                    <div style="flex:2;">Item</div>
+                    <div style="flex:1;">Price</div>
+                    <div style="flex:1;">Quantity</div>
+                    <div style="flex:1;"><b>Total</b></div>
+                </div>
+                {% for i  in items %}
+                <div class="cart-row">
+                    <div style="flex:2;"><img src="{{ i.product.imageURL }}" alt="" class="row-image"></div>
+                    <div style="flex:2;">{{ i.product.name }}</div>
+                    <div style="flex:1;">${{ i.product.price|floatformat:2 }}</div>
+                    <div style="flex:1;">
+                        <p class="quantity">{{ i.quantity }}</p>
+                        <div class="quantity">
+                            <img data-product="{{ i.product.id }}" data-action="add" class="chg-quantity update-cart" src="{% static 'images/arr_up.png' %}" alt="">
+                            <img data-product="{{ i.product.id }}" data-action="remove" class="chg-quantity update-cart" src="{% static 'images/arr_down.png' %}" alt="">
+                        </div>
+                    </div>
+                    <div style="flex:1;"><b>${{ i.get_total }}</b></div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}
